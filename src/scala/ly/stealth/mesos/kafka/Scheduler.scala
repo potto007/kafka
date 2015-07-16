@@ -152,6 +152,7 @@ object Scheduler extends org.apache.mesos.Scheduler {
 
       if (declineReason != null) {
         driver.declineOffer(offer.getId)
+        logger.info("[declineOffer] " + Str.offer(offer))
         if (!declineReason.isEmpty) declineReasons.add(offer.getHostname + Str.id(offer.getId.getValue) + " - " + declineReason)
       }
     }
