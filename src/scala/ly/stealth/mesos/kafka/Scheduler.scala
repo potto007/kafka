@@ -111,6 +111,7 @@ object Scheduler extends org.apache.mesos.Scheduler {
 
   def resourceOffers(driver: SchedulerDriver, offers: util.List[Offer]): Unit = {
     logger.info("[resourceOffers]\n" + Str.offers(offers))
+    this.driver = driver
     syncBrokers(offers)
   }
 
@@ -156,6 +157,7 @@ object Scheduler extends org.apache.mesos.Scheduler {
     }
     
     if (!declineReasons.isEmpty) logger.info("Declined offers:\n" + declineReasons.mkString("\n"))
+    else logger.info("Declined offers for no provided reason. (Probably because all brokers already running)")
 
     for (broker <- cluster.getBrokers) {
       if (broker.shouldStop) {
