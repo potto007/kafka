@@ -147,18 +147,22 @@ object Scheduler extends org.apache.mesos.Scheduler {
 
   private[kafka] def syncBrokers(offers: util.List[Offer]): Unit = {
     val declineReasons = new util.ArrayList[String]()
+    val declinedOffers = new util.ArrayList[String]()
     for (offer <- offers) {
       val declineReason = acceptOffer(offer)
 
       if (declineReason != null) {
         driver.declineOffer(offer.getId)
-        logger.info("[declineOffer] " + Str.offer(offer))
+        declinedOffers.add(Str.offer(offer))
         if (!declineReason.isEmpty) declineReasons.add(offer.getHostname + Str.id(offer.getId.getValue) + " - " + declineReason)
       }
     }
     
     if (!declineReasons.isEmpty) logger.info("Declined offers:\n" + declineReasons.mkString("\n"))
-    else logger.info("Declined offers for no provided reason. (Probably because all brokers already running)")
+    else {
+      logger.info("Declined offers for no provided reason. (Probably because all brokers already running)")
+      logger.info("[declinedOffers] " + declinedOffers.mkString("\n"))
+    }
 
     for (broker <- cluster.getBrokers) {
       if (broker.shouldStop) {
