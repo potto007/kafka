@@ -255,7 +255,11 @@ object Scheduler extends org.apache.mesos.Scheduler {
     for (attribute <- offer.getAttributesList)
       if (attribute.hasText) attributes.put(attribute.getName, attribute.getText.getValue)
 
-    driver.launchTasks(util.Arrays.asList(offer.getId), util.Arrays.asList(task_))
+    // Set a timeout for offer refusal
+    // TODO: make configurable
+    val filters = Filters.newBuilder().setRefuseSeconds(10).build()
+
+    driver.launchTasks(util.Arrays.asList(offer.getId), util.Arrays.asList(task_), filters)
     broker.task = new Broker.Task(id, task_.getSlaveId.getValue, task_.getExecutor.getExecutorId.getValue, offer.getHostname, attributes)
 
     logger.info(s"Starting broker ${broker.id}: launching task $id by offer ${offer.getHostname + Str.id(offer.getId.getValue)}\n ${Str.task(task_)}")
