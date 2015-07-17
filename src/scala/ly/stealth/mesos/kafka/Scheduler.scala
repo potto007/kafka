@@ -266,7 +266,8 @@ object Scheduler extends org.apache.mesos.Scheduler {
     // TODO: make configurable
     val filters = Filters.newBuilder().setRefuseSeconds(10).build()
 
-    driver.launchTasks(util.Arrays.asList(offer.getId), util.Arrays.asList(task_), filters)
+    //driver.launchTasks(util.Arrays.asList(offer.getId), util.Arrays.asList(task_), filters)
+    driver.launchTasks(util.Arrays.asList(offer.getId), util.Arrays.asList(task_))
     broker.task = new Broker.Task(id, task_.getSlaveId.getValue, task_.getExecutor.getExecutorId.getValue, offer.getHostname, attributes)
 
     logger.info(s"Starting broker ${broker.id}: launching task $id by offer ${offer.getHostname + Str.id(offer.getId.getValue)}\n ${Str.task(task_)}")
