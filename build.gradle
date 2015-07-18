@@ -16,9 +16,6 @@ sourceSets {
     main {
         scala { srcDirs = ['src/scala'] }
     }
-    test {
-        scala { srcDirs = ['src/test'] }
-    }
 }
 
 dependencies {
@@ -34,7 +31,6 @@ dependencies {
     compile "org.eclipse.jetty:jetty-servlet:9.0.4.v20130625"
     compile "org.eclipse.jetty:jetty-util:9.0.4.v20130625"
     compile "javax.servlet:javax.servlet-api:3.0.1"
-    testCompile 'junit:junit:4.12'
 
     compile ('org.apache.kafka:kafka_2.10:0.8.2.1') {
         exclude group: "javax.jms"
@@ -46,7 +42,6 @@ dependencies {
 }
 
 jar {
-    dependsOn 'test'
     doFirst {
         from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {
             exclude "*"
