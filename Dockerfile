@@ -18,6 +18,7 @@ RUN git clone https://github.com/potto007/kafka
 WORKDIR /opt/kafka
 
 RUN \
+    git checkout feature/fix-framework && \
     ./gradlew jar && \
         ln -s /shared/kafka_2.10-0.8.2.1.tgz
 
