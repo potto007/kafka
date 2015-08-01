@@ -84,8 +84,8 @@ object Scheduler extends org.apache.mesos.Scheduler {
       .setExecutor(newExecutor(broker))
 
     taskBuilder
-      .addResources(Resource.newBuilder.setName("cpus").setType(Value.Type.SCALAR).setScalar(Value.Scalar.newBuilder.setValue(broker.cpus)))
-      .addResources(Resource.newBuilder.setName("mem").setType(Value.Type.SCALAR).setScalar(Value.Scalar.newBuilder.setValue(broker.mem)))
+      .addResources(Resource.newBuilder.setName("cpus").setType(Value.Type.SCALAR).setScalar(Value.Scalar.newBuilder.setValue(broker.cpus)).setRole(Config.frameworkRole))
+      .addResources(Resource.newBuilder.setName("mem").setType(Value.Type.SCALAR).setScalar(Value.Scalar.newBuilder.setValue(broker.mem)).setRole(Config.frameworkRole))
       .addResources(Resource.newBuilder.setName("ports").setType(Value.Type.RANGES).setRanges(
       Value.Ranges.newBuilder.addRange(Value.Range.newBuilder().setBegin(port).setEnd(port)))
       )
